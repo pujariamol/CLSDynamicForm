@@ -1,0 +1,22 @@
+<div ng-controller="CompanyController as companyCtrl"
+	class="col-sm-8 col-sm-offset-2 text" style="margin-top: 20px;">
+	<h3>
+		<b>Company</b>
+	</h3>
+	<div growl></div>
+	<input type="hidden" ng-model="companyCtrl.company.id" />
+	<div class="form-group">
+		<label for="name">Name</label> <input type="text" name="companyName"
+			class="form-control" ng-model="companyCtrl.company.name" id="name"
+			placeholder="Enter Company Name here!!" required>
+	</div>
+
+	<div class="form-group">
+		<label for="description">Description</label> <input type="text"
+			class="form-control" ng-model="companyCtrl.company.description"
+			id="description" placeholder="Enter Company description here!!">
+	</div>
+	<button ng-click="companyCtrl.submit()"
+		class="btn btn-primary btn-lg btn-block" value="submit values">{{!companyCtrl.company.id
+		? 'Add' : 'Update'}}</button>
+</div>

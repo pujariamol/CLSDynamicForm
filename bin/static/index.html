@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en"  ng-app="dynamicFormsApp" >
+
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="">
+<meta name="author" content="">
+
+<title>CLS Data Management Tool</title>
+
+<!-- Bootstrap Core CSS -->
+<link href="css/bootstrap.min.css" rel="stylesheet">
+<link href="css/angular-growl.min.css" rel="stylesheet">
+
+<link href="css/clsStyle.css" rel="stylesheet">
+<!-- Custom CSS -->
+<link href="css/simple-sidebar.css" rel="stylesheet">
+
+</head>
+
+<body ng-controller="mainController">
+
+	<div ng-include="'partials/navbar.html'"></div>
+
+	<div id="main" class="partialsContainer">
+		<div ng-view></div>
+	</div>
+	
+		<!-- Sidebar -->
+	<!-- 	<div ng-include="'partials/leftpanel.html'"></div> 
+		<div ng-include="'partials/mainContent.html'"></div>-->
+	</div>
+	
+	<!-- jQuery -->
+	<script src="js/jquery.js"></script>
+
+	<!-- Bootstrap Core JavaScript -->
+	<script src="js/bootstrap.min.js"></script>
+
+	<script src="js/angular.min.js"></script>
+	<script src="js/angular-route.min.js"></script>
+	<script src="js/angular-growl.min.js"></script>
+	
+	<script src="js/commonController.js"></script>
+	<script src="js/commonService.js"></script>
+	<script src="js/common.js"></script>
+	
+	<!-- Menu Toggle Script -->
+
+<script>
+$("#menu-toggle").click(function(e) {
+    e.preventDefault();
+    alert("ads");
+    $("#wrapper").toggleClass("toggled");
+});
+
+</script>
+</body>
+
+</html>
