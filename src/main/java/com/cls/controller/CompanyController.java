@@ -1,10 +1,11 @@
 package com.cls.controller;
 
 import java.io.IOException;
-
-import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,10 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.cls.dao.CompanyDao;
 import com.cls.model.Company;
 import com.cls.util.Constants;
-import com.fasterxml.jackson.core.JsonFactory;
-import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
@@ -30,39 +28,41 @@ public class CompanyController {
 	private CompanyDao companyDao;
 	JsonNodeFactory factory = new JsonNodeFactory(false);
 
-	@RequestMapping(method = RequestMethod.POST, headers = "Accept=*")
+	@RequestMapping(method = RequestMethod.POST)
 	@ResponseBody
-	public String create(@RequestBody Company company, HttpServletResponse response) {
-		
+	public ResponseEntity<?> create(@RequestBody Company company) {
+
 		ObjectNode msg = factory.objectNode();
 		try {
 			System.out.println("asdf");
-			
-
 			msg.put("message", "Company created successfully!!");
-
-			// JSONPObject j = new json
-			// throw new Exception("Test---------------------------");
 		} catch (Exception e) {
+			msg.put("message", "Error in creating company!!");
 			e.printStackTrace();
 		}
-		
-//		String resp = "{\"message\":\"Created New Company \"}";
-
-		return msg.toString();
-		// return Constants.COMPANY_CREATED_SUCCESSFULLY;
+		return new ResponseEntity<String>(msg.toString(),HttpStatus.CREATED);
 	}
 
-	// @RequestMapping(method = RequestMethod.POST)
-	// public String created(@PathVariable String payload) {
-	// try{
-	// System.out.println(payload);
-	//// companyDao.save(company);
-	// }catch(Exception ex){
-	// return Constants.EXCEPTION_WHILE_CREATING_COMPANY + ex.getMessage() ;
-	// }
-	// return Constants.COMPANY_CREATED_SUCCESSFULLY;
-	// }
+	@RequestMapping(value = "/all", method = RequestMethod.GET)
+	public String getAll() {
+		ObjectNode msg = factory.objectNode();
+		ArrayNode companyList = factory.arrayNode();
+
+		try {
+			List<Company> companies = (List<Company>) companyDao.findAll();
+			for (Company company : companies) {
+				ObjectNode obj = factory.objectNode();
+				obj.put("name", company.getName());
+				obj.put("description", company.getDescription());
+				companyList.add(obj);
+			}
+			msg.put("companies", companyList);
+		} catch (Exception e) {
+			msg.put("message", "Error fetching company list!!");
+			e.printStackTrace();
+		}
+		return msg.toString();
+	}
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public Company getById(@PathVariable String id) throws IOException {
